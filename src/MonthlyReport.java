@@ -5,18 +5,18 @@ import java.util.ArrayList;
 
 public class MonthlyReport {
 
-    String path = "";
+    ArrayList<MonthlyReportRecord> monthReport = new ArrayList<>();
     String monthFile = "";
-
-    ArrayList<StringMonthlyReport> monthReport = new ArrayList<>();
 
     private String readFileContentsOrNull() {
          for (int i = 1; i <= 3; i++) {
-            path = "/Users/averin/dev/java-sprint2-hw/resources/m.20210" + i + ".csv";
+           String path = "./resources/m.20210" + i + ".csv";
             try {
                  monthFile = Files.readString(Path.of(path));
+
                  String j = Integer.toString(i);
                  splitMonthFile(j);
+
             } catch (IOException e) {
                 System.out.println("Невозможно прочитать файл с месячным отчётом. Возможно, файл не находится в нужной директории.");
                 monthFile = null;
@@ -25,20 +25,20 @@ public class MonthlyReport {
         return monthFile;
     }
 
-    void splitMonthFile (String month) {
-        String [] splitedMonthFileToLine = monthFile.split(System.lineSeparator());
-        for(int i = 1; i < splitedMonthFileToLine.length; i++){
-            String [] linesContent = splitedMonthFileToLine[i].split(",");
-                StringMonthlyReport stringMonthlyReport = new StringMonthlyReport(month, linesContent[0], linesContent[1], linesContent[2], linesContent[3]);
+    void splitMonthFile(String month) {
+        String[] splitedMonthFileToLine = monthFile.split(System.lineSeparator());
+        for (int i = 1; i < splitedMonthFileToLine.length; i++) {
+            String[] linesContent = splitedMonthFileToLine[i].split(",");
+                MonthlyReportRecord stringMonthlyReport = new MonthlyReportRecord(month, linesContent[0], linesContent[1], linesContent[2], linesContent[3]);
                 monthReport.add(stringMonthlyReport);
             }
         }
 
-       int  monthFindExpensesOrIncomePerMonth (String monthNumber, String TRUEorFALSE) {
+       int  monthFindExpensesOrIncomePerMonth(String monthNumber, String TRUEorFALSE) {
            int amount = 0;
-        for(StringMonthlyReport object : monthReport) {
-            if(object.month.equals(monthNumber)) {
-                if(object.isExpense.equals(TRUEorFALSE)) {
+        for (MonthlyReportRecord object : monthReport) {
+            if (object.monthName.equals(monthNumber)) {
+                if (object.isExpense.equals(TRUEorFALSE)) {
                     amount += Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
                 }
             }
@@ -46,13 +46,12 @@ public class MonthlyReport {
         return amount;
         }
 
-        void monthFindMostIncomeItem (String monthNumber, String TRUEorFALSE) {
+        int monthFindIncomeMaxAmount(String monthNumber, String TRUEorFALSE) {
             int maxAmount = 0;
             int amount = 0;
 
-            // Находим maxAmount среди всех строк конкретного месяца
-            for (StringMonthlyReport object : monthReport) {
-                if (object.month.equals(monthNumber)) {
+            for (MonthlyReportRecord object : monthReport) {
+                if (object.monthName.equals(monthNumber)) {
                     if (object.isExpense.equals(TRUEorFALSE)) {
                         amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
                     }
@@ -61,12 +60,16 @@ public class MonthlyReport {
                     }
                 }
             }
+            return maxAmount;
+        }
 
-            // проходим по всем строкам месяца и находим ту которая ==  maxAmount
-            for (StringMonthlyReport object : monthReport) {
-                if (object.month.equals(monthNumber)) {
+        void monthFindMostIncomeItem(String monthNumber, String TRUEorFALSE) {
+        int maxAmount = monthFindIncomeMaxAmount(monthNumber, TRUEorFALSE);
+
+            for (MonthlyReportRecord object : monthReport) {
+                if (object.monthName.equals(monthNumber)) {
                     if (object.isExpense.equals(TRUEorFALSE)) {
-                        amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
+                       int  amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
                         if (amount == maxAmount) {
                             System.out.println("Самый прибыльный товар в этом месяце - " + object.itemName + ". Сумма прибыли составляет - " + maxAmount);
                         }
@@ -75,27 +78,30 @@ public class MonthlyReport {
             }
         }
 
-        void monthFindBiggestExpense (String monthNumber, String TRUEorFALSE) {
-        int amount;
-        int biggestAmount = 0;
+        int monthFindBiggestExpenseAmount(String monthNumber, String TRUEorFALSE) {
+            int amount;
+            int biggestAmount = 0;
 
-        // Находим biggestAmount
-        for(StringMonthlyReport object : monthReport) {
-            if(object.month.equals(monthNumber)) {
-                if(object.isExpense.equals(TRUEorFALSE)) {
-                    amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
-                    if(amount > biggestAmount)
-                        biggestAmount = amount;
+            for (MonthlyReportRecord object : monthReport) {
+                if (object.monthName.equals(monthNumber)) {
+                    if (object.isExpense.equals(TRUEorFALSE)) {
+                        amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
+                        if (amount > biggestAmount)
+                            biggestAmount = amount;
+                    }
                 }
             }
+            return biggestAmount;
         }
 
-        // проходим по всем строкам месяца и находим ту которая == biggestAmount
-        for(StringMonthlyReport object : monthReport) {
-            if(object.month.equals(monthNumber)) {
-                if(object.isExpense.equals(TRUEorFALSE)) {
-                    amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
-                    if(amount == biggestAmount) {
+        void monthFindBiggestExpenseItem(String monthNumber, String TRUEorFALSE) {
+        int biggestAmount = monthFindBiggestExpenseAmount(monthNumber, TRUEorFALSE);
+
+        for (MonthlyReportRecord object : monthReport) {
+            if (object.monthName.equals(monthNumber)) {
+                if (object.isExpense.equals(TRUEorFALSE)) {
+                    int amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
+                    if (amount == biggestAmount) {
                         System.out.println("Самая большая трата в этом месяце - " + object.itemName + ". Сумма траты составляет - " + biggestAmount);
                     }
                 }
@@ -104,21 +110,21 @@ public class MonthlyReport {
         }
         }
 
-        void printStatisticForMont () {
-        for(int i = 1; i <=3; i++) {
-            if(i == 1) {
+        void printStatisticForMont() {
+        for (int i = 1; i <=3; i++) {
+            if (i == 1) {
                 System.out.println("Статистика за Январь: ");
-            } else if(i == 2) {
+            } else if (i == 2) {
                 System.out.println("Статистика за Февраль: ");
             } else {
                 System.out.println("Статистика за Март: ");
             }
             monthFindMostIncomeItem("" + i, "FALSE");
-            monthFindBiggestExpense("" +i, "TRUE");
+            monthFindBiggestExpenseItem("" +i, "TRUE");
         }
         }
 
-    void goMonth () {
+    void monthlyReportProcessing() {
         readFileContentsOrNull();
         System.out.println("Месячные отчеты к работе готовы!");
     }

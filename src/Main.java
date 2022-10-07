@@ -1,32 +1,38 @@
 import java.util.Scanner;
 
 public class Main {
+    private static final int END_PROGRAM = 0;
+    private static final int GET_MONTHLY_REPORTS = 1;
+    private static final int GET_YEARLY_REPORT = 2;
+    private static final int COMPARE_REPORTS = 3;
+    private static final int PRINT_INFO_MONTHLY_REPORT = 4;
+    private static final int PRINT_INFO_YEARLY_REPORT = 5;
 
     public static void main(String[] args) {
         YearlyReport yearlyReport = new YearlyReport();
         MonthlyReport monthlyReport = new MonthlyReport();
-        Comparator comparator = new Comparator();
+        ReportValidator reportValidator = new ReportValidator();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
             printMenu();
             int command = scanner.nextInt();
 
-            if (command == 1) {
-                monthlyReport.goMonth();
-            } else if (command == 2) {
-                yearlyReport.goYear();
-            } else if (command == 3) {
+            if (command == GET_MONTHLY_REPORTS) {
+                monthlyReport.monthlyReportProcessing();
+            } else if (command == GET_YEARLY_REPORT) {
+                yearlyReport.yearlyReportProcessing();
+            } else if (command == COMPARE_REPORTS) {
                 if(monthlyReport.monthReport.size() != 0 && yearlyReport.yearReport.size() != 0) {
-                    comparator.compare(monthlyReport, yearlyReport);
+                    reportValidator.compare(monthlyReport, yearlyReport);
                 } else {
                     System.out.println("Перед сравнением требуется считать месячные и годовой отчеты!");
                 }
-            } else if (command == 4) {
+            } else if (command == PRINT_INFO_MONTHLY_REPORT) {
                 monthlyReport.printStatisticForMont();
-            } else if (command == 5) {
+            } else if (command == PRINT_INFO_YEARLY_REPORT) {
                 yearlyReport.printStatisticForYear();
-            } else if (command == 0) {
+            } else if (command == END_PROGRAM) {
                 System.out.println("Выход");
                 break;
             } else {

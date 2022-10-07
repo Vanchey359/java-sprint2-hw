@@ -1,13 +1,13 @@
-public class StringMonthlyReport {
+public class MonthlyReportRecord {
 
-    String month;
+    String monthName;
     String itemName;
     String isExpense;
     String quantity;
     String sumOfOne;
 
-    public StringMonthlyReport(String month, String itemName, String isExpense, String quantity, String sumOfOne) {
-        this.month = month;
+    public MonthlyReportRecord(String monthName, String itemName, String isExpense, String quantity, String sumOfOne) {
+        this.monthName = monthName;
         this.itemName = itemName;
         this.isExpense = isExpense;
         this.quantity = quantity;
