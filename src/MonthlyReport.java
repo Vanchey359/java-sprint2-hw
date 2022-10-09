@@ -34,27 +34,33 @@ public class MonthlyReport {
             }
         }
 
-       int  monthFindExpensesOrIncomePerMonth(String monthNumber, String TRUEorFALSE) {
-           int amount = 0;
-        for (MonthlyReportRecord object : monthReport) {
-            if (object.monthName.equals(monthNumber)) {
-                if (object.isExpense.equals(TRUEorFALSE)) {
-                    amount += Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
-                }
+       int  monthFindIncomePerMonth(String monthNumber) {
+           int income = 0;
+        for (MonthlyReportRecord reportRecord : monthReport) {
+            if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals("FALSE")) {
+                    income += Integer.parseInt(reportRecord.sumOfOne) * Integer.parseInt(reportRecord.quantity);
             }
         }
-        return amount;
+        return income;
         }
+
+    int  monthFindExpensesPerMonth(String monthNumber) {
+        int expenses = 0;
+        for (MonthlyReportRecord reportRecord : monthReport) {
+            if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals("TRUE")) {
+                expenses += Integer.parseInt(reportRecord.sumOfOne) * Integer.parseInt(reportRecord.quantity);
+            }
+        }
+        return expenses;
+    }
 
         int monthFindIncomeMaxAmount(String monthNumber, String TRUEorFALSE) {
             int maxAmount = 0;
             int amount = 0;
 
-            for (MonthlyReportRecord object : monthReport) {
-                if (object.monthName.equals(monthNumber)) {
-                    if (object.isExpense.equals(TRUEorFALSE)) {
-                        amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
-                    }
+            for (MonthlyReportRecord reportRecord : monthReport) {
+                if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals(TRUEorFALSE)) {
+                        amount = Integer.parseInt(reportRecord.sumOfOne) * Integer.parseInt(reportRecord.quantity);
                     if (amount > maxAmount) {
                         maxAmount = amount;
                     }
@@ -66,14 +72,12 @@ public class MonthlyReport {
         void monthFindMostIncomeItem(String monthNumber, String TRUEorFALSE) {
         int maxAmount = monthFindIncomeMaxAmount(monthNumber, TRUEorFALSE);
 
-            for (MonthlyReportRecord object : monthReport) {
-                if (object.monthName.equals(monthNumber)) {
-                    if (object.isExpense.equals(TRUEorFALSE)) {
-                       int  amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
+            for (MonthlyReportRecord reportRecord : monthReport) {
+                if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals(TRUEorFALSE)) {
+                       int  amount = Integer.parseInt(reportRecord.sumOfOne) * Integer.parseInt(reportRecord.quantity);
                         if (amount == maxAmount) {
-                            System.out.println("Самый прибыльный товар в этом месяце - " + object.itemName + ". Сумма прибыли составляет - " + maxAmount);
+                            System.out.println("Самый прибыльный товар в этом месяце - " + reportRecord.itemName + ". Сумма прибыли составляет - " + maxAmount);
                         }
-                    }
                 }
             }
         }
@@ -82,13 +86,12 @@ public class MonthlyReport {
             int amount;
             int biggestAmount = 0;
 
-            for (MonthlyReportRecord object : monthReport) {
-                if (object.monthName.equals(monthNumber)) {
-                    if (object.isExpense.equals(TRUEorFALSE)) {
-                        amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
-                        if (amount > biggestAmount)
+            for (MonthlyReportRecord reportRecord : monthReport) {
+                if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals(TRUEorFALSE)) {
+                        amount = Integer.parseInt(reportRecord.sumOfOne) * Integer.parseInt(reportRecord.quantity);
+                        if (amount > biggestAmount) {
                             biggestAmount = amount;
-                    }
+                        }
                 }
             }
             return biggestAmount;
@@ -97,15 +100,12 @@ public class MonthlyReport {
         void monthFindBiggestExpenseItem(String monthNumber, String TRUEorFALSE) {
         int biggestAmount = monthFindBiggestExpenseAmount(monthNumber, TRUEorFALSE);
 
-        for (MonthlyReportRecord object : monthReport) {
-            if (object.monthName.equals(monthNumber)) {
-                if (object.isExpense.equals(TRUEorFALSE)) {
-                    int amount = Integer.parseInt(object.sumOfOne) * Integer.parseInt(object.quantity);
+        for (MonthlyReportRecord reportRecord : monthReport) {
+            if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals(TRUEorFALSE)) {
+                    int amount = Integer.parseInt(reportRecord.sumOfOne) * Integer.parseInt(reportRecord.quantity);
                     if (amount == biggestAmount) {
-                        System.out.println("Самая большая трата в этом месяце - " + object.itemName + ". Сумма траты составляет - " + biggestAmount);
+                        System.out.println("Самая большая трата в этом месяце - " + reportRecord.itemName + ". Сумма траты составляет - " + biggestAmount);
                     }
-                }
-
             }
         }
         }
@@ -124,7 +124,7 @@ public class MonthlyReport {
         }
         }
 
-    void monthlyReportProcessing() {
+    void processMonthReport() {
         readFileContentsOrNull();
         System.out.println("Месячные отчеты к работе готовы!");
     }

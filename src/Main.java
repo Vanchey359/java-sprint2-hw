@@ -19,19 +19,27 @@ public class Main {
             int command = scanner.nextInt();
 
             if (command == GET_MONTHLY_REPORTS) {
-                monthlyReport.monthlyReportProcessing();
+                monthlyReport.processMonthReport();
             } else if (command == GET_YEARLY_REPORT) {
-                yearlyReport.yearlyReportProcessing();
+                yearlyReport.processYearReport();
             } else if (command == COMPARE_REPORTS) {
-                if(monthlyReport.monthReport.size() != 0 && yearlyReport.yearReport.size() != 0) {
+                if (monthlyReport.monthReport.size() != 0 && yearlyReport.yearReport.size() != 0) {
                     reportValidator.compare(monthlyReport, yearlyReport);
                 } else {
                     System.out.println("Перед сравнением требуется считать месячные и годовой отчеты!");
                 }
             } else if (command == PRINT_INFO_MONTHLY_REPORT) {
-                monthlyReport.printStatisticForMont();
+                if (monthlyReport.monthReport.size() != 0) {
+                    monthlyReport.printStatisticForMont();
+                } else {
+                    System.out.println("Что бы вывести статистику - сначала считайте месячные отчеты!");
+                }
             } else if (command == PRINT_INFO_YEARLY_REPORT) {
-                yearlyReport.printStatisticForYear();
+                if (yearlyReport.yearReport.size() != 0) {
+                    yearlyReport.printStatisticForYear();
+                } else {
+                    System.out.println("Что бы вывести статистику - сначала считайте годовой отчет!");
+                }
             } else if (command == END_PROGRAM) {
                 System.out.println("Выход");
                 break;
@@ -41,7 +49,7 @@ public class Main {
         }
     }
 
-    public static void printMenu() {
+    private static void printMenu() {
         System.out.println("Что вы хотите сделать?");
         System.out.println("1 - Считать все месячные отчеты");
         System.out.println("2 - Считать годовой отчет");
