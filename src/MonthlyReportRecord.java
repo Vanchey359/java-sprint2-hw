@@ -1,13 +1,13 @@
 public class MonthlyReportRecord {
 
-    String monthName;
+    int month;
     String itemName;
-    String isExpense;
-    String quantity;
-    String sumOfOne;
+    boolean isExpense;
+    int quantity;
+    int sumOfOne;
 
-    public MonthlyReportRecord(String monthName, String itemName, String isExpense, String quantity, String sumOfOne) {
-        this.monthName = monthName;
+    public MonthlyReportRecord(int monthName, String itemName, boolean isExpense, int quantity, int sumOfOne) {
+        this.month = monthName;
         this.itemName = itemName;
         this.isExpense = isExpense;
         this.quantity = quantity;

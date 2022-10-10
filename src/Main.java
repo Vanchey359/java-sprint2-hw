@@ -4,7 +4,7 @@ public class Main {
     private static final int END_PROGRAM = 0;
     private static final int GET_MONTHLY_REPORTS = 1;
     private static final int GET_YEARLY_REPORT = 2;
-    private static final int COMPARE_REPORTS = 3;
+    private static final int VALIDATE_REPORTS = 3;
     private static final int PRINT_INFO_MONTHLY_REPORT = 4;
     private static final int PRINT_INFO_YEARLY_REPORT = 5;
 
@@ -22,20 +22,20 @@ public class Main {
                 monthlyReport.processMonthReport();
             } else if (command == GET_YEARLY_REPORT) {
                 yearlyReport.processYearReport();
-            } else if (command == COMPARE_REPORTS) {
-                if (monthlyReport.monthReport.size() != 0 && yearlyReport.yearReport.size() != 0) {
-                    reportValidator.compare(monthlyReport, yearlyReport);
+            } else if (command == VALIDATE_REPORTS) {
+                if (!monthlyReport.monthReport.isEmpty() && !yearlyReport.yearReport.isEmpty()) {
+                    reportValidator.validate(monthlyReport, yearlyReport);
                 } else {
                     System.out.println("Перед сравнением требуется считать месячные и годовой отчеты!");
                 }
             } else if (command == PRINT_INFO_MONTHLY_REPORT) {
-                if (monthlyReport.monthReport.size() != 0) {
+                if (!monthlyReport.monthReport.isEmpty()) {
                     monthlyReport.printStatisticForMont();
                 } else {
                     System.out.println("Что бы вывести статистику - сначала считайте месячные отчеты!");
                 }
             } else if (command == PRINT_INFO_YEARLY_REPORT) {
-                if (yearlyReport.yearReport.size() != 0) {
+                if (!yearlyReport.yearReport.isEmpty()) {
                     yearlyReport.printStatisticForYear();
                 } else {
                     System.out.println("Что бы вывести статистику - сначала считайте годовой отчет!");

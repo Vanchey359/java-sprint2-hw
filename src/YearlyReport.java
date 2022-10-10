@@ -9,13 +9,15 @@ public class YearlyReport {
 
     private void readFileContentsOrNull() {
         String path = "./resources/y.2021.csv";
-        String yearFile;
         try {
-            yearFile = Files.readString(Path.of(path));
+            String yearFile = Files.readString(Path.of(path));
             String[] lines = yearFile.split(System.lineSeparator());
             for (int i = 1; i < lines.length; i++) {
                 String[] linesContent = lines[i].split(",");
-                YearlyReportRecord stringYearlyReport = new YearlyReportRecord(linesContent[0], linesContent[1], linesContent[2]);
+                int month = Integer.parseInt(linesContent[0]);
+                int amount = Integer.parseInt(linesContent[1]);
+                boolean isExpense = Boolean.parseBoolean(linesContent[2]);
+                YearlyReportRecord stringYearlyReport = new YearlyReportRecord(month, amount, isExpense);
                 yearReport.add(stringYearlyReport);
             }
         } catch (IOException e) {
@@ -23,21 +25,21 @@ public class YearlyReport {
         }
     }
 
-    int yearFindExpensesPerMonth(String monthNumber) {
+    int yearFindExpensesPerMonth(int month) {
         int expenses = 0;
         for (YearlyReportRecord reportRecord : yearReport) {
-            if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals("true")) {
-                expenses += Integer.parseInt(reportRecord.amount);
+            if (reportRecord.month == month && reportRecord.isExpense) {
+                expenses += reportRecord.amount;
             }
         }
         return expenses;
     }
 
-    int yearFindIncomePerMonth(String monthNumber) {
+    int yearFindIncomePerMonth(int month) {
         int income = 0;
         for (YearlyReportRecord reportRecord : yearReport) {
-            if (reportRecord.monthName.equals(monthNumber) && reportRecord.isExpense.equals("false")) {
-                income += Integer.parseInt(reportRecord.amount);
+            if (reportRecord.month == month && !reportRecord.isExpense) {
+                income += reportRecord.amount;
             }
         }
         return income;
@@ -49,8 +51,8 @@ public class YearlyReport {
         int allYearIncome = 0;
 
         for (int i = 1; i <= 3; i++) {
-            int yearExpensesPerMonth = yearFindExpensesPerMonth("0" + i);
-            int yearIncomePerMonth = yearFindIncomePerMonth("0" + i);
+            int yearExpensesPerMonth = yearFindExpensesPerMonth(i);
+            int yearIncomePerMonth = yearFindIncomePerMonth(i);
             System.out.println("Месяц " + i + " - Доход составил " + (yearIncomePerMonth - yearExpensesPerMonth));
 
             allYearExpenses += yearExpensesPerMonth;

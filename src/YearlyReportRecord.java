@@ -1,11 +1,11 @@
 public class YearlyReportRecord {
 
-    String monthName;
-    String amount;
-    String isExpense;
+    int month;
+    int amount;
+    boolean isExpense;
 
-    public YearlyReportRecord(String month, String amount, String isExpense) {
-        this.monthName = month;
+    public YearlyReportRecord(int month, int amount, boolean isExpense) {
+        this.month = month;
         this.amount = amount;
         this.isExpense = isExpense;
     }
